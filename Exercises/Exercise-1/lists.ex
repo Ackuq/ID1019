@@ -51,7 +51,11 @@ defmodule Lists do
   #:b, :d] are the unique elements in the list [:a, :b, :a, :d, :a,
   #:b, :b, :a]
   def unique(l) do
-    
+    [ head | tail] = l
+    cond do
+      tail == [] -> head
+      end
+    end
   end
 
   #pack(l): return a list containing lists of equal elements, [:a, :a, :b,
@@ -62,6 +66,10 @@ defmodule Lists do
 
   #return a list where the order of elements is reversed
   def reverse(l) do
-
+    [head | tail] = l
+    case tail do
+      [] -> [head]
+      _ ->  reverse(tail) ++ [head]
+    end
   end
 end
