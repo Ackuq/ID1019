@@ -146,9 +146,8 @@ defmodule Introduction do
   end
 
   #return a list where the order of elements is reversed
-  def reverse([]) do [] end
-
-  def reverse([head | tail]) do reverse(tail) ++ [head] end
+  def reverseList([]) do [] end
+  def reverseList([head | tail]) do reverse(tail) ++ [head] end
 
 #-----------------------
 # 4.1 Sorting
