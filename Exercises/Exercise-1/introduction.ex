@@ -1,6 +1,6 @@
 defmodule Introduction do
 #------------------
-# A first program
+# 2. A first program
 #------------------
 # Compute the double of a number
   def double(n) do
@@ -30,9 +30,9 @@ defmodule Introduction do
     :math.pi * :math.pow(r, 2)
   end
 
-  #-----------------------
-  # Recursive functions
-  #-----------------------
+#-----------------------
+# 3. Recursive functions
+#-----------------------
 
   # Calculate the product of m and n
   def product(m, n) do
@@ -60,9 +60,9 @@ defmodule Introduction do
     end
   end
 
-  #-----------------------
-  # Lists
-  #-----------------------
+#-----------------------
+# 4. List Operations
+#-----------------------
 
     # return the n'th element of the list l
   def nth(n, [head | tail]) do
@@ -150,9 +150,13 @@ defmodule Introduction do
 
   def reverse([head | tail]) do reverse(tail) ++ [head] end
 
-  #-----------------------
-  # Sorting
-  #-----------------------
+#-----------------------
+# 4.1 Sorting
+#-----------------------
+
+#-----------------------
+# 4.2 Insertion sort
+#-----------------------
 
   #Start by defning a function insert(element, list),
   #that inserts the element at the right place in the list.
@@ -177,8 +181,10 @@ defmodule Introduction do
     end
   end
 
+#-----------------------
+# 4.3 Merge sort
+#-----------------------
 
-  # Merge sorted
   def msort([ head | [] ]) do [head] end
   def msort(list) do
     {list1, list2} = msplit(list, [], [])
@@ -195,11 +201,104 @@ defmodule Introduction do
     end
   end
 
+  # Split list into two sublists until original list is empty
   def msplit([],list1, list2) do
     {list1, list2}
   end
   def msplit([head | tail],list1, list2) do
     msplit(tail, [head | list2], list1)
   end
+
+#-----------------------
+# 4.4 Quicksort
+#-----------------------
+
+  # low = sublist of elements smaller than pivot
+  # high = sublist of elements larger than pivot
+  def qsort([]) do [] end
+  def qsort([pivot | list]) do
+    {low , high} = qsplit(pivot, list, [], [])
+    qappend(low, [pivot | high])
+  end
+
+  # Use the pivot and decide where to put the head of
+  # the original list
+  def qsplit(_, [], small, large) do {small, large} end
+  def qsplit(pivot, [head | tail], small, large) do
+    if head < pivot do
+      qsplit(pivot, tail, [head | small], large)
+    else
+      qsplit(pivot, tail, small, [head | large])
+    end
+  end
+
+  # Append the list with the sorted left sublist and the sorted
+  # right sublist
+  def qappend(small, []) do small end
+  def qappend(small, [h | t]) do qsort(small) ++ [h] ++ qsort(t) end
+
+#-----------------------
+# Performance analysis
+#-----------------------
+  def bench() do
+    ls = [16, 32, 64, 128, 256, 512]
+    n = 100
+    # bench is a closure: a function with an environment.
+    bench = fn(l) ->
+      seq = Enum.to_list(1..l)
+      tn = time(n, fn -> nreverse(seq) end)
+      tr = time(n, fn -> reverse(seq) end)
+      :io.format("length: ~10w nrev: ~8w us rev: ~8w us~n", [l, tn, tr])
+    end
+    # We use the library function Enum.each that will call
+    # bench(l) for each element l in ls
+    Enum.each(ls, bench)
+  end
+
+  # Time the execution time of the a function.
+  def time(n, fun) do
+    start = System.monotonic_time(:milliseconds)
+    loop(n, fun)
+    stop = System.monotonic_time(:milliseconds)
+    stop - start
+  end
+
+  # Apply the function n times.
+  def loop(n, fun) do
+    if n == 0 do
+      :ok
+    else
+      fun.()
+      loop(n - 1, fun)
+    end
+  end
+
+#-----------------------
+# 5. Reverse
+#-----------------------
+
+  def nreverse([]) do [] end
+  def nreverse([head | tail]) do
+    reversed = nreverse(tail)
+    [head] ++ reversed
+  end
+
+  # Initialize reverse function
+  def reverse(list) do reverseFast(list, []) end
+
+  # Reverse the list
+  def reverseFast([], reversed) do reversed end
+  def reverseFast([head | tail], reversed) do
+    reverseFast(tail, [head | reversed])
+  end
+
+#-----------------------
+# 6. More challenges
+#-----------------------
+
+#-----------------------
+# 6.1 Integer to binary
+#-----------------------
+
 
 end
