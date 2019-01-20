@@ -256,9 +256,9 @@ defmodule Introduction do
 
   # Time the execution time of the a function.
   def time(n, fun) do
-    start = System.monotonic_time(:milliseconds)
+    start = System.monotonic_time(:microsecond)
     loop(n, fun)
-    stop = System.monotonic_time(:milliseconds)
+    stop = System.monotonic_time(:microsecond)
     stop - start
   end
 
@@ -299,5 +299,33 @@ defmodule Introduction do
 # 6.1 Integer to binary
 #-----------------------
 
+  def to_binary(0) do [] end
+  def to_binary(n) do
+    to_binary( div(n - rem(n , 2), 2) ) ++ [rem(n, 2)]
+  end
 
+  def to_better(n) do to_better(n, []) end
+  def to_better(0, b) do b end
+  def to_better(n, b) do
+    to_better(div(n, 2), [rem(n, 2) | b])
+  end
+
+#-----------------------
+# 6.2 Binary to integer
+#-----------------------
+
+  def to_integer(x) do to_integer(x, 0) end
+  def to_integer([], n) do n end
+  def to_integer([x | r], n) do
+    to_integer(r , n + product( rem(x, 2), exp(2, length(r)) ) )
+  end
+
+#-----------------------
+# 6.2 Fibonacci
+#-----------------------
+
+  def fib(0) do 0 end
+  def fib(1) do 1 end
+  def fib(n) do fib(n - 1) + fib(n - 2) end
+  
 end
