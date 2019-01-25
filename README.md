@@ -8,11 +8,15 @@ This is a repository for my course work with the course ID1019 on KTH.
 
 ## Seminars
 
-*Too be updated*
+- [ ] **Huffman coding**
+- [ ] **Meta interpreter**
+- [ ] **Mandelbrot**
+- [ ] **Dining philosophers**
+- [ ] **A web server**
 
 ## Exercises
 - [x] **Introduction**
-- [ ] **Taking the Derivative**
+- [x] **Taking the Derivative**
 - [ ] **Elixir Concurrency**
 - [ ] **Mutual Exclusion**
 - [ ] **Train Shunting**

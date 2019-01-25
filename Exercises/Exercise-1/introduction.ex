@@ -64,17 +64,13 @@ defmodule Introduction do
 # 4. List Operations
 #-----------------------
 
-    # return the n'th element of the list l
-  def nth(n, [head | tail]) do
-    case n do
-      0 -> head
-      _ -> nth(n-1, tail)
-    end
-  end
+  # return the n'th element of the list l
+  def nth(0, [head | _]) do head end
+  def nth(n, [_ | tail]) do nth(n-1, tail) end
 
   # return the number of elements in the list l
   def len([]) do 0 end
-  def len([_head | tail]) do 1 + len(tail) end
+  def len([ _ | tail]) do 1 + len(tail) end
 
   # return the sum of all elements in the list l, assume that
   #all elements are integers
@@ -87,25 +83,16 @@ defmodule Introduction do
 
   #add the element x to the list l if it is not in the list
   def add(x, []) do [x] end
-  def add(x, list = [head | tail])
-  do
-    cond do
-      head == x -> list
-      tail == [] -> [head | [x]]
-      true -> [head | add(x, tail)]
-    end
-  end
+  def add(x, list = [x | _]) do list end
+  def add(x, [head | []]) do [head | [x]] end
+  def add(x, [head | tail]) do [head | add(x, tail)] end
 
 
   # remove all occurrences of x in l
 
   def remove( _ , []) do [] end
-  def remove(x, [head | tail]) do
-    cond do
-      head == x -> remove(x, tail)
-      true -> [head | remove(x, tail)]
-    end
-  end
+  def remove(x, [x | tail]) do remove(x, tail) end
+  def remove(x, [head | tail]) do [head | remove(x, tail)] end
 
 
   #return a list of unique elements in the list l, that is [:a,
@@ -114,13 +101,9 @@ defmodule Introduction do
 
   # Function that return true if element is present in list
   # false if otherwise
-  def contains(element, list) do
-    case list do
-      [] -> false
-      [head | _tail] when element == head -> true
-      [_head | tail] -> contains(element, tail);
-    end
-  end
+  def contains(_, []) do false end
+  def contains(element, [element | _]) do true end
+  def contains(element, [_ | tail]) do contains(element, tail) end
 
   # Start with an empty list for the unique elements
   def unique(list) do unique(list, []) end
@@ -159,26 +142,20 @@ defmodule Introduction do
 
   #Start by defning a function insert(element, list),
   #that inserts the element at the right place in the list.
-  def insert(element, list) do
-    case list do
-      [] -> [element]
-      [head | tail] when head >= element -> [element | [ head | tail]]
-      [head | tail] -> [head | insert(element, tail)]
+  def insert(element, []) do [element] end
+  def insert(element, [head | tail]) do
+    cond do
+      head >= element -> [element | [ head | tail]]
+      true -> [head | insert(element, tail)]
     end
   end
 
   # Take first element and sort it
-  def isort(_list = [head | tail]) do
-    isort([head], tail)
-  end
+  def isort([head | tail]) do isort([head], tail) end
 
   # If all elements have been checked, return the sorted list
-  def isort(sorted_list, unsorted_list) do
-    case unsorted_list do
-      [] -> sorted_list
-      [head | tail] -> insert(head, sorted_list) |> isort(tail)
-    end
-  end
+  def isort(sorted_list, []) do sorted_list end
+  def isort(sorted_list, [head | tail]) do insert(head, sorted_list) |> isort(tail) end
 
 #-----------------------
 # 4.3 Merge sort
@@ -327,5 +304,5 @@ defmodule Introduction do
   def fib(0) do 0 end
   def fib(1) do 1 end
   def fib(n) do fib(n - 1) + fib(n - 2) end
-  
+
 end
