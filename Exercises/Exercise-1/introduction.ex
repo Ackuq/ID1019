@@ -84,7 +84,7 @@ defmodule Introduction do
   #add the element x to the list l if it is not in the list
   def add(x, []) do [x] end
   def add(x, list = [x | _]) do list end
-  def add(x, [head | []]) do [head | [x]] end
+  def add(x, [head]) do [head | [x]] end
   def add(x, [head | tail]) do [head | add(x, tail)] end
 
 
