@@ -3,62 +3,40 @@ defmodule Introduction do
 # 2. A first program
 #------------------
 # Compute the double of a number
-  def double(n) do
-    2*n
-  end
+  def double(n) do 2*n end
 
   #a function that converts from Fahrenheit to Celsius (the function is as
   #follows: C = (F − 32)/1.8)
-  def toCelsius(f) do
-    (f - 32)/1.8
-  end
+  def toCelsius(f) do (f - 32)/1.8 end
 
   #a function that calculates the area of a rectangle give the length of the
   #two sides
-  def areaRec(b, h) do
-    b * h
-  end
+  def areaRec(b, h) do b * h end
 
   #a function that calculates the area of a square, using the previous
   #function
-  def areaSq(x) do
-    areaRec(x, x)
-  end
+  def areaSq(x) do areaRec(x, x) end
 
   #a function that calculates the area of a circle given the radius
-  def areaCirc(r) do
-    :math.pi * :math.pow(r, 2)
-  end
+  def areaCirc(r) do product(:math.pi, expFast(r, 2)) end
 
 #-----------------------
 # 3. Recursive functions
 #-----------------------
 
   # Calculate the product of m and n
-  def product(m, n) do
-    case m do
-      0 -> 0
-      _ -> n + product(m-1, n)
-    end
-  end
+  def product(0, _) do 0 end
+  def product(m, n) do n + product(m-1, n) end
 
   # Calculate x raised to the nth power
-  def exp(x, n) do
-    case n do
-      0 -> 1
-      1 -> x
-      _ -> product(x, exp(x, n-1))
-    end
-  end
+  def exp(_, 0) do 1 end
+  def exp(x, 1) do x end
+  def exp(x, n) do product(x, exp(x, n-1)) end
 
   # Calculate x raised to the nth power, but faster
-  def expFast(x, n) do
-    cond do
-      n == 1 -> x
-      rem(n, 2) == 0 -> expFast(x, div(n,2)) * expFast(x, div(n,2))
-      true -> expFast(x, n-1) * x
-    end
-  end
+  def expFast(x, 1) do x end
+  def expFast(x, n) when rem(n, 2) == 0 do product( expFast(x, div(n,2)) , expFast(x, div(n,2)) ) end
+  def expFast(x, n) do product( x , expFast(x, n-1) ) end
 
 #-----------------------
 # 4. List Operations
@@ -143,11 +121,11 @@ defmodule Introduction do
   #Start by defning a function insert(element, list),
   #that inserts the element at the right place in the list.
   def insert(element, []) do [element] end
+  def insert(element, [head | tail]) when head >= element do
+    [element | [ head | tail]]
+  end
   def insert(element, [head | tail]) do
-    cond do
-      head >= element -> [element | [ head | tail]]
-      true -> [head | insert(element, tail)]
-    end
+    [head | insert(element, tail)]
   end
 
   # Take first element and sort it
@@ -200,12 +178,11 @@ defmodule Introduction do
   # Use the pivot and decide where to put the head of
   # the original list
   def qsplit(_, [], small, large) do {small, large} end
+  def qsplit(pivot, [head | tail], small, large) when head < pivot do
+    qsplit(pivot, tail, [head | small], large)
+  end
   def qsplit(pivot, [head | tail], small, large) do
-    if head < pivot do
-      qsplit(pivot, tail, [head | small], large)
-    else
-      qsplit(pivot, tail, small, [head | large])
-    end
+    qsplit(pivot, tail, small, [head | large])
   end
 
   # Append the list with the sorted left sublist and the sorted
