@@ -18,6 +18,16 @@ defmodule OrderedTree do
     end
   end
 
+  # return value if key is found, else return :no
+  def lookup(_, :nil) do :no end
+  def lookup(key, {:node, key, value, _, _}) do {:value, value} end
+  def lookup(key, {:node, k, _, left, right}) do
+    if key < k do
+      lookup(key, left)
+    else
+      lookup(key, right)
+    end
+  end
 
   # Add element to tree, traverse into the tree until you
   # find an empty spot
@@ -30,7 +40,7 @@ defmodule OrderedTree do
     end
   end
 
-  # Get the minimum node from root
+  # Get the minimum node from root, used when deleting elements
   def minValueNode({:node, key, value, :nil, _}) do
     # return a tuple with the key and value of the minimum value node
     {key, value}
@@ -54,6 +64,19 @@ defmodule OrderedTree do
       {:node, k, v, delete(key, left), right}
     else
       {:node, k, v, left, delete(key, right)}
+    end
+  end
+
+  # Modify an element
+  def modify(_, _, :nil) do :nil end
+  def modify(key, val, {:node, key, _, left, right}) do
+    {:node, key, val, left, right}
+  end
+  def modify(key, val, {:node, k, v, left, right}) do
+    if key < k do
+      {:node, k, v, modify(key, val, left), right};
+    else
+      {:node, k, v, left, modify(key, val,right)}
     end
   end
 end
