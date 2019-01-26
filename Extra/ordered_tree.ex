@@ -79,4 +79,27 @@ defmodule OrderedTree do
       {:node, k, v, left, modify(key, val,right)}
     end
   end
+
+
+
+  def printTree({:node, key, value, :nil, :nil}) do
+    IO.write("{ key: #{key}, val: #{value} }")
+  end
+  def printTree({:node, key, value, :nil, right}) do
+    IO.write("{ key: #{key}, val: #{value}, right -> ")
+    printTree(right)
+    IO.write('}')
+  end
+  def printTree({:node, key, value, left, :nil}) do
+    IO.write("{ key: #{key}, val: #{value}, left -> ")
+    printTree(left)
+    IO.write('}')
+  end
+  def printTree({:node, key, value, left, right}) do
+    IO.write("{ key: #{key}, val: #{value}, left -> ")
+    printTree(left)
+    IO.write(', right -> ')
+    printTree(right)
+    IO.write('}')
+  end
 end
