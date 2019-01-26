@@ -80,8 +80,7 @@ defmodule OrderedTree do
     end
   end
 
-
-
+  # Print function for easier analysis
   def printTree({:node, key, value, :nil, :nil}) do
     IO.write("{ key: #{key}, val: #{value} }")
   end
