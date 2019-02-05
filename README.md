@@ -10,7 +10,7 @@ This is a repository for my course work with the course ID1019 on KTH.
 ## Seminars
 
 - [x] **Huffman coding**
-- [ ] **Meta interpreter**
+- [x] **Meta interpreter**
 - [ ] **Mandelbrot**
 - [ ] **Dining philosophers**
 - [ ] **A web server**
