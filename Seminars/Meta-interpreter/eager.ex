@@ -38,7 +38,7 @@ defmodule Eager do
     end
   end
 
-  # eval_expr takes an expression and returns ok if atom
+  # eval_expr takes an expression and evaluates it
   @spec eval_expr(expr, env) :: {:ok, id} | :error
   def eval_expr({:apply, expr, args}, env) do
     case eval_expr(expr, env) do
@@ -70,7 +70,9 @@ defmodule Eager do
         {:ok, {:closure, par, seq, closure}}
     end
   end
+  # If we evaluate atom, its mapped to itself
   def eval_expr({:atm, id}, _) do {:ok, id} end
+  # We need to check if the variable is in the enviroment, then check what value it is mapped to
   def eval_expr({:var, id}, env) do
     case Env.lookup(id, env) do
       nil ->
@@ -79,11 +81,11 @@ defmodule Eager do
         {:ok, str}
     end
   end
+  # Evaluate each expression
   def eval_expr({:cons, he, te}, env) do
     case eval_expr(he, env) do
       :error ->
         :error
-
       {:ok, hs} ->
         case eval_expr(te, env) do
           :error ->
@@ -94,7 +96,8 @@ defmodule Eager do
     end
   end
 
-  @spec eval_match(expr, expr, env) :: {:ok, env} | :fail
+  # Match a pattern with a data structure
+  @spec eval_match(pattern, expr, env) :: {:ok, env} | :fail
   def eval_match(:ignore, _, env) do
     {:ok, env}
   end
@@ -123,11 +126,13 @@ defmodule Eager do
     :fail
   end
 
-
+  # Initiation
   def eval(seq) do
     eval_seq(seq, Env.new())
   end
 
+  # Evaluate a sequence of expressions
+  @spec eval_seq([expr], env) :: {:ok, id} | :error
   def eval_seq([exp], env) do eval_expr(exp, env) end
   def eval_seq([{:match, pattern, exp} | rest], env) do
     case eval_expr(exp, env) do
@@ -146,6 +151,7 @@ defmodule Eager do
     end
   end
 
+  # Take a pattern and return list of variables
   @spec extract_vars(pattern) :: [variable] | []
   def extract_vars({:cons, p1, p2}) do extract_vars(p1) ++ extract_vars(p2) end
   def extract_vars({:var, var}) do [var] end
