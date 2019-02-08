@@ -11,7 +11,7 @@ This is a repository for my course work with the course ID1019 on KTH.
 
 - [x] **Huffman coding**
 - [x] **Meta interpreter**
-- [ ] **Mandelbrot**
+- [x] **Mandelbrot**
 - [ ] **Dining philosophers**
 - [ ] **A web server**
 
