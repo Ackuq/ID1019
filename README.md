@@ -19,7 +19,8 @@ This is a repository for my course work with the course ID1019 on KTH.
 - [x] **Introduction**
 - [x] **Taking the Derivative**
 - [x] **Elixir Concurrency**
-- [ ] **Mutual Exclusion**
+- [x] **Mutual Exclusion**
+- [x] **Ray Tracer**
 - [ ] **Train Shunting**
 - [x] **A 2-3 Tree Insertion**
 - [ ] **Splay Trees**
